@@ -99,7 +99,6 @@ public class BinaryTree {
             printCurrentLevel(root.left, level-1);
             printCurrentLevel(root.right, level-1);
         }
-
     }
 
     public static void printLevelOrder(Node root) {
@@ -214,18 +213,27 @@ public class BinaryTree {
         }
     }
 
-    public static void printSpiralStack(Node root) {
+    public static void printLevel(Node root) {
         if(root == null) return;
 
-        Stack<Node> s1 = new Stack<>();
-        Stack<Node> s2 = new Stack<>();
+        Queue<Node> queue = new LinkedList<Node>();
+        queue.offer(root);
 
-        s1.push(root);
+        while(!queue.isEmpty()) {
+            Node temp = queue.peek();
+            System.out.print(temp.data + " ");
+            queue.poll();
 
-        while(!s1.empty() || !s2.empty()) {
+            if (temp.left != null) {
+                queue.offer(temp.left);
+            }
 
+            if (temp.right != null) {
+                queue.offer(temp.right);
+            }
         }
     }
+
 
     public static void main(String[] args) {
 //        BinaryTree binaryTree = new BinaryTree();
@@ -269,14 +277,24 @@ public class BinaryTree {
 //
 //        System.out.println(sum(binaryTree.root));
 
+//        binaryTree.root = new Node(1);
+//        binaryTree.root.left = new Node(2);
+//        binaryTree.root.right = new Node(3);
+//        binaryTree.root.left.left = new Node(7);
+//        binaryTree.root.left.right = new Node(6);
+//        binaryTree.root.right.left = new Node(5);
+//        binaryTree.root.right.right = new Node(4);
+
         binaryTree.root = new Node(1);
         binaryTree.root.left = new Node(2);
         binaryTree.root.right = new Node(3);
-        binaryTree.root.left.left = new Node(7);
-        binaryTree.root.left.right = new Node(6);
-        binaryTree.root.right.left = new Node(5);
-        binaryTree.root.right.right = new Node(4);
+        binaryTree.root.left.left = new Node(4);
+        binaryTree.root.left.right = new Node(5);
+        binaryTree.root.left.left.left = new Node(20);
+        binaryTree.root.left.left.right = new Node(50);
 
-        printSpiral(binaryTree.root);
+//        printSpiral(binaryTree.root);
+
+        printLevel(binaryTree.root);
     }
 }

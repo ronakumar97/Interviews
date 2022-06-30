@@ -52,6 +52,43 @@ public class StackCode {
         return temp;
     }
 
+    public static int prec(char c) {
+        if(c == '+' || c == '-') return 1;
+        if(c == '*' || c == '/') return 2;
+        if(c == '^') return 3;
+        return -1;
+    }
+
+    public static String infix(String str) {
+        Stack<Character> st = new Stack<>();
+        String result = "";
+        for(int i = 0; i < str.length(); i++) {
+            if(Character.isLetterOrDigit(str.charAt(i))) {
+                result += str.charAt(i);
+            } else if(str.charAt(i) == '(') {
+                st.push(str.charAt(i));
+            } else if(str.charAt(i) == ')') {
+                while(!st.empty() && st.peek() != '(') {
+                    result += st.pop();
+                }
+                st.pop();
+            } else {
+                while(!st.empty() && (prec(str.charAt(i)) <= prec(st.peek()))) {
+                    result += st.pop();
+                }
+                st.push(str.charAt(i));
+            }
+        }
+
+        while(!st.empty()) {
+            result += st.pop();
+        }
+
+        return result;
+    }
+
+
+
     public static void main(String[] args) {
         int arr[] = { 11, 13, 21, 3 };
         printNGE(arr);
@@ -63,18 +100,21 @@ public class StackCode {
         st.push(92);
         st.push(23);
 
-//        Stack<Integer> ans = sortStack(st);
+        Stack<Integer> ans = sortStack(st);
+        ListIterator<Integer> listIterator = ans.listIterator();
+        while(listIterator.hasNext()) {
+            System.out.print(listIterator.next() + " ");
+        }
+        System.out.println();
+
+//        Stack<Integer> ans = reverseStack(st);
 //        ListIterator<Integer> listIterator = ans.listIterator();
 //        while(listIterator.hasNext()) {
 //            System.out.print(listIterator.next() + " ");
 //        }
 //        System.out.println();
 
-        Stack<Integer> ans = reverseStack(st);
-        ListIterator<Integer> listIterator = ans.listIterator();
-        while(listIterator.hasNext()) {
-            System.out.print(listIterator.next() + " ");
-        }
-        System.out.println();
+        String exp = "a+b*(c^d-e)^(f+g*h)-i";
+        System.out.println(infix(exp));
     }
 }
